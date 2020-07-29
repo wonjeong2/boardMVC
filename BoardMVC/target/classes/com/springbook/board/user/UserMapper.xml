@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springbook.board.user.UserMapper"> 
+	
+	<insert id="join" parameterType="com.springbook.board.user.UserVO">
+		INSERT INTO t_user
+		(uid, upw, salt, nm, addr) 
+		VALUES
+		(#{uid}, #{upw}, #{salt}, #{nm}, #{addr})
+	</insert>
+</mapper>
+
+
+
+
+
+
+
+
