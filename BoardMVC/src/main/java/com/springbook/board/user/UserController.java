@@ -22,6 +22,9 @@ public class UserController {
 	
 	@RequestMapping(value="/loginPost", method=RequestMethod.POST)
 	public String login(UserVO param, HttpSession hs) {
+		int result = 0;
+		
+		
 		
 		return "user/login";
 	}
