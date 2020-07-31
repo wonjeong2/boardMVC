@@ -2,12 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.springbook.board.user.UserMapper"> 
 	
-	<insert id="join" parameterType="com.springbook.board.user.UserVO">
+	<insert id="join" parameterType="UserVO">
 		INSERT INTO t_user
 		(uid, upw, salt, nm, addr) 
 		VALUES
 		(#{uid}, #{upw}, #{salt}, #{nm}, #{addr})
 	</insert>
+	
+	<select id ="login" resultType="UserVO" parameterType="UserVO">
+      select i_user ,uid, salt, upw, nm from t_user where uid=#{uid}
+   </select>
+	
+	
 </mapper>
 
 

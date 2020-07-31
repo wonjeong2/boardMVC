@@ -7,6 +7,7 @@
 <title>로그인</title>
 </head>
 <body>
+	<div>${msg}</div>
 	<div>
 		<form action="/user/loginPost" method="post">
 			<div>아이디 : <input type="text" name="uid"></div>

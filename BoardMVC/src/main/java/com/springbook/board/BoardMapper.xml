@@ -3,27 +3,27 @@
 <mapper namespace="com.springbook.board.BoardMapper"> 
 	<!-- resultType는 select문에서 무조건 써줘야한다!!!!! -->
 	
-	<insert id="insBoard" parameterType="com.springbook.board.BoardVO">
+	<insert id="insBoard" parameterType="BoardVO">
 		INSERT INTO t_board
 		(title, ctnt)
 		VALUES
 		(#{title}, #{ctnt})
 	</insert>
 
-	<select id="selBoardList" resultType="com.springbook.board.BoardVO">
+	<select id="selBoardList" resultType="BoardVO">
 		SELECT i_board, title, r_dt 
 		FROM t_board
 		ORDER BY i_board DESC
 	</select>
 	
-	<select id="selBoard" resultType="com.springbook.board.BoardVO" 
-	parameterType="com.springbook.board.BoardVO">
+	<select id="selBoard" resultType="BoardVO" 
+	parameterType="BoardVO">
 		SELECT i_board, title, ctnt, r_dt 
 		FROM t_board
 		WHERE i_board=#{i_board}
 	</select>
 
-	<update id="updBoard" parameterType="com.springbook.board.BoardVO">
+	<update id="updBoard" parameterType="BoardVO">
 		UPDATE t_board
 		SET title = #{title}
 		, ctnt = #{ctnt}

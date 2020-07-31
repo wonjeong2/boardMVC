@@ -46,7 +46,9 @@
 		<beans:property name="dataSource" ref="dataSource"/>
 		<beans:property name="configLocation" value="/WEB-INF/spring/mybatis-alias.xml"/>
 	</beans:bean>
-	<mybatis-spring:scan base-package="com.springbook.board"/>	
+	<mybatis-spring:scan base-package="com.springbook.board"/>
+	
+	<beans:bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
 </beans:beans>
 
 
