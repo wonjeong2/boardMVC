@@ -31,7 +31,7 @@ public class UserService {
 	   public int login(UserVO param, HttpSession hs) {
 		      int result = 0;
 		      UserVO db = mapper.login(param);
-
+		      
 		      if (db != null) {  //로그인성공
 		         String pw = param.getUpw();
 		         String salt = db.getSalt();

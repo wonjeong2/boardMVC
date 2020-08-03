@@ -8,6 +8,7 @@
 <script src="/resources/js/axios.min.js"></script>
 </head>
 <body>
+	<div>${msg}</div>
 	<div>
 		<div><a href="/user/login">로그인</a></div>
 		<form action="/user/joinPost" method="post">
@@ -24,6 +25,11 @@
 	</div>
 	<script>
 		function sendPhAuthNumber() {
+			if(ph.value.length < 9) {
+				alert('Phone 번호를 확인해주세요')  //자바스크립트와 서버쪽에서 이중체크 해야한다!!!!!!!
+				return
+			}
+			
 			console.log('ph :' + ph.value)
 			axios.get('/user/phAuth', {
 				params : {

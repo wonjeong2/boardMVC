@@ -10,7 +10,19 @@ public class UserVO {
 	private String addr;
 	private String ph;
 	private String r_dt;
+	private String phAuthNumber;
 	
+	
+	
+	
+	public String getPhAuthNumber() {
+		return phAuthNumber;
+	}
+
+	public void setPhAuthNumber(String phAuthNumber) {
+		this.phAuthNumber = phAuthNumber;
+	}
+
 	public String getSalt() {
 		return salt;
 	}

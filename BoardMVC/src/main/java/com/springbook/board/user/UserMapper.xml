@@ -4,9 +4,9 @@
 	
 	<insert id="join" parameterType="UserVO">
 		INSERT INTO t_user
-		(uid, upw, salt, nm, addr) 
+		(uid, upw, salt, nm, addr, ph) 
 		VALUES
-		(#{uid}, #{upw}, #{salt}, #{nm}, #{addr})
+		(#{uid}, #{upw}, #{salt}, #{nm}, #{addr}, #{ph})
 	</insert>
 	
 	<select id ="login" resultType="UserVO" parameterType="UserVO">
