@@ -1,5 +1,6 @@
 package com.springbook.board;
 
+
 public class BoardVO {
 	private int i_board;
 	private String title;

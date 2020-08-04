@@ -30,6 +30,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springbook.board.common.Const;
 import com.springbook.board.common.KakaoAuth;
+import com.springbook.board.common.KakaoUserInfo;
 import com.springbook.board.common.MyUtils;
 
 @Controller
@@ -120,7 +121,7 @@ public class UserController {
 	
 	@RequestMapping(value="/loginKAKAO", method=RequestMethod.GET)
 	public String loginKAKAO() {
-		
+		//인증코드 받기
 		String uri = String.format("redirect:https://kauth.kakao.com/oauth/authorize?client_id=%s&redirect_uri=%s&response_type=code", 
 				Const.KAKAO_CLIENT_ID, Const.KAKAO_AUTH_REDIRECT_URI);
 		
@@ -129,63 +130,29 @@ public class UserController {
 	
 	@RequestMapping(value="/joinKakao", method=RequestMethod.GET)
 	public String joinKAKAO(@RequestParam(required=false) String code,  
-			@RequestParam(required=false) String error) {
+			@RequestParam(required=false) String error,
+			HttpSession hs) {
 		//기본값은 @RequestParam(required=true)인데 false로 설정해주면 값이 안넘어와도 에러가 안터진다. code, error 값이 하나만 넘어와도 된다 !
 		
 		
 		System.out.println("code : " + code);  //코드가 넘어왔다면 로그인 성공
 		System.out.println("error : " + error);  //에러가 넘어왔다면 로그인 실패
 		
-		if(code == null) {
+		if(code == null) { //로그인 실패
 			return "redirect:/user/login";
 		}
 		
-		HttpHeaders headers = new HttpHeaders();
+		int result = service.kakaoLogin(code, hs);
 		
-		Charset utf8 = Charset.forName("UTF-8");  //메타정보를 넘겨주는 곳:haeder
-		MediaType mediaType = new MediaType(MediaType.APPLICATION_JSON, utf8);
-		headers.setAccept(Arrays.asList(mediaType));
-		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);  
-		headers.set("KEY", "VALUE");
-		
-		MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();  //정보를 넘겨주는곳:parameter
-		map.add("grant_type","authorization_code");
-		map.add("client_id", Const.KAKAO_CLIENT_ID);
-		map.add("redirect_uri",Const.KAKAO_AUTH_REDIRECT_URI);
-		map.add("code",code);
-		
-		HttpEntity<LinkedMultiValueMap<String, String>> entity = new HttpEntity(map, headers);
-		
-		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<String> respEntity 
-		= restTemplate.exchange(Const.KAKAO_ACCESS_TOKEN_HOST, HttpMethod.POST, entity, String.class);
-		
-		String result = respEntity.getBody();  //json형태로 넘어온다. 문자열 형태, 이걸 VO 만들어서 따로 떼어서 넣어준다.
-		
-		System.out.println("result :" + result);
-		//expires_in : 엑세스토큰의 살아있는 시간 , refresh_token_expires_in : refresh_token의 살아있는 시간
-		
-		ObjectMapper om = new ObjectMapper(); //json을 object형태로 바꿔주는것
-		//ObjectMapper om = new ObjectMapper().; : json형태로 바꿔놓은 값중 굳이 필요없는 값은 안가져오고싶을때 사용. set/get 안만들어도 에러안터진다!
-		try {
-			KakaoAuth auth = om.readValue(result, KakaoAuth.class);  //json형태의 문자열을 쪼개서 KakaoAuth에 담아주는것
-			
-			System.out.println("access_token : " + auth.getAccess_token());
-			System.out.println("refresh_token : " + auth.getRefresh_token());
-			System.out.println("expires_in : " + auth.getExpires_in());
-			System.out.println("refresh_token_expires_in : " + auth.getRefresh_token_expires_in());
-			
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
-		
+		return "redirect:/board/list";		
+	}
+	
+	@RequestMapping(value="/logout", method=RequestMethod.GET)
+	public String logout(HttpSession hs) {
+		hs.invalidate();
 		
 		return "redirect:/user/login";
 	}
-	
-	
 }
 
 

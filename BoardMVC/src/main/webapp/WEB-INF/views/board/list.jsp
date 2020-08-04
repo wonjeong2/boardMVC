@@ -8,6 +8,8 @@
 <title>리스트</title>
 </head>
 <body>
+	<div>${loginUser.nm}님 환영합니다.</div>
+	<a href="/user/logout"><button>로그아웃</button></a>
 	<a href="/board/write">글등록</a>
 	<table>
 		<tr>

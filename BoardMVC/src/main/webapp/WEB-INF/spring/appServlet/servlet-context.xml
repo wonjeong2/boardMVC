@@ -32,7 +32,7 @@
 	    <beans:property name="maximumPoolSize" value="10" />
 	    <beans:property name="idleTimeout" value="30000" />
 	    
-	    <beans:property name="jdbcUrl" value="jdbc:mysql://127.0.0.1:3307/springboard?serverTimeZone=UTC"/>
+	    <beans:property name="jdbcUrl" value="jdbc:mysql://127.0.0.1:3307/springboard?useUnicode=true&amp;characterEncoding=utf8"/>
 		<beans:property name="username" value="root"/>
 		<beans:property name="password" value="1234"/> 
 	</beans:bean>
