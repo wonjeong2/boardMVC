@@ -10,10 +10,11 @@
 		(#{title}, #{ctnt})
 	</insert>
 
-	<select id="selBoardList" resultType="BoardVO">
+	<select id="selBoardList" resultType="BoardVO" parameterType="BoardVO">
 		SELECT i_board, title, r_dt 
 		FROM t_board
 		ORDER BY i_board DESC
+		LIMIT ${sIdx}, ${count}
 	</select>
 	
 	<select id="selBoard" resultType="BoardVO" 

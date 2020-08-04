@@ -1,11 +1,15 @@
 package com.springbook.board;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping(value = "/board")
@@ -16,9 +20,22 @@ public class BoardController {
 	
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public String boardList(Model model) {
-		model.addAttribute("data", service.selBoardList());		
+
+//		model.addAttribute("data", service.selBoardList());		
 		return "board/list";
 	}	
+	
+	@ResponseBody
+	@RequestMapping(value = "/getListData", method = RequestMethod.GET)
+	public Map<String, Object> getListData(@RequestParam int page) {
+		System.out.println("page : " + page);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("result", service.selBoardList(page));
+		
+		return map;
+	}
+	
 	
 	@RequestMapping(value = "/write", method = RequestMethod.GET)
 	public String boardWrite() {
