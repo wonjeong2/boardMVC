@@ -7,6 +7,6 @@ public class Const {
 	public static final String KAKAO_API_HOST = "https://kapi.kakao.com";
 	
 	//게시판 한번에 가져올 데이터 수. 한페이지에 가져올 글의 수
-	public static final int ROW_COUNT = 30;
+	public static final int ROW_COUNT = 60;
 	
 }

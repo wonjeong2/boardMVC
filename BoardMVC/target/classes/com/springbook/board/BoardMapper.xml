@@ -13,6 +13,9 @@
 	<select id="selBoardList" resultType="BoardVO" parameterType="BoardVO">
 		SELECT i_board, title, r_dt 
 		FROM t_board
+		<if test='searchText != null and searchText !=""'>
+			WHERE title like '%${searchText}%' 
+		</if>
 		ORDER BY i_board DESC
 		LIMIT ${sIdx}, ${count}
 	</select>
