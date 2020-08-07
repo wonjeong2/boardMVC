@@ -51,7 +51,7 @@ public class UserService {
 		      UserVO db = mapper.login(param);
 		      
 		      if (db != null) {  //로그인성공
-		         String pw = param.getUpw();
+		         String pw = param.getUpw();  //내가 입력한값
 		         String salt = db.getSalt();
 		         String hashPw = MyUtils.hashPassword(pw, salt);
 		         if (db.getUpw().equals(hashPw)) {  //로그인성공

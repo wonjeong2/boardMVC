@@ -49,6 +49,14 @@
 	<mybatis-spring:scan base-package="com.springbook.board"/>
 	
 	<beans:bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+	
+	<interceptors>
+		<interceptor>
+			<mapping path="/board/*"/>
+			<beans:bean class="com.springbook.board.common.checkInterceptor"/>
+		</interceptor>
+	</interceptors>	
+	
 </beans:beans>
 
 

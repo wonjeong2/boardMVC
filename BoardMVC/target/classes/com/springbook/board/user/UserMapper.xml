@@ -2,8 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.springbook.board.user.UserMapper"> 
 	
-	<insert id="join" parameterType="UserVO"
-	useGeneratedKeys="true" keyProperty="i_user">
+	<insert id="join" parameterType="UserVO" useGeneratedKeys="true" keyProperty="i_user">
 <!-- useGeneratedKeys="true" keyProperty="i_user" : insert하자마자 pk 값을 UserVO에 넣는것 !!! -->
 		INSERT INTO t_user
 		(uid, upw, salt, nm, addr, ph) 
@@ -12,7 +11,7 @@
 	</insert>
 	
 	<select id ="login" resultType="UserVO" parameterType="UserVO">
-      SELECT i_user, uid, upw, nm, r_dt
+      SELECT i_user, uid, upw, nm, r_dt, salt
       FROM t_user
       WHERE uid=#{uid}
    	</select>
