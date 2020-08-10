@@ -142,28 +142,25 @@ public class UserController {
 	
 	
 	@RequestMapping(value="/profile", method=RequestMethod.GET)
-	public String profile(Model model, HttpSession hs) {
-		
+	public String profile(Model model, HttpSession hs) {				
 		model.addAttribute("myProfile", service.getProfileImg(hs));
-		
 		return "user/profile";
 	}
 	
-	
 	@RequestMapping(value="/profile", method=RequestMethod.POST)
 	public String profile(@RequestParam("uploadProfile") MultipartFile file
-			, HttpSession hs) {		
+			, HttpSession hs) {
 		
-		service.uploadPfoFile(file, hs);
+		if(!file.isEmpty()) {
+			service.uploadProfile(file, hs);
+		}
 		
 		return "redirect:/user/profile";
 	}
 	
 	@RequestMapping(value="/delProfile", method=RequestMethod.GET)
-	public String profile(HttpSession hs) {		
-		
+	public String profile(HttpSession hs) {
 		service.delProfileImgParent(hs);
-		
 		return "redirect:/user/profile";
 	}
 	

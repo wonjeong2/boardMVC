@@ -209,7 +209,7 @@ public class UserService {
 	   
 	   
 	   //파일업로드
-	   public void uploadPfoFile(MultipartFile file, HttpSession hs) {
+	   public void uploadProfile(MultipartFile file, HttpSession hs) {
 		   UserVO loginUser = (UserVO)hs.getAttribute("loginUser");
 		   
 		   String realPath = hs.getServletContext().getRealPath("/"); //루트 절대경로 가져오기
