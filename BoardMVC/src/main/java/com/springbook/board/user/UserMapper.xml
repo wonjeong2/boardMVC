@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="com.springbook.board.user.UserMapper"> 
 	
 	<insert id="join" parameterType="UserVO" useGeneratedKeys="true" keyProperty="i_user">
@@ -10,12 +11,28 @@
 		(#{uid}, #{upw}, #{salt}, #{nm}, #{addr}, #{ph})
 	</insert>
 	
-	<select id ="login" resultType="UserVO" parameterType="UserVO">
-      SELECT i_user, uid, upw, nm, r_dt, salt
-      FROM t_user
-      WHERE uid=#{uid}
-   	</select>
+	
+	<select id="selUser" parameterType="UserVO"
+		resultType="UserVO">
+		SELECT i_user, uid, upw, nm, r_dt, salt, profileImg
+		FROM t_user
+		WHERE 
+		<if test='uid != null and uid != ""'>uid = #{uid}</if>
+		<if test='i_user > 0'>i_user = #{i_user}</if>
+	</select>
+
    
+   <update id="updUser" parameterType="UserVO">
+		UPDATE t_user
+		SET m_dt = now()
+		<if test='upw != null and upw !=""'>, upw = #{upw}</if>
+		<if test='nm != null and nm !=""'>, nm = #{nm}</if>
+		<if test='addr != null and addr !=""'>, addr = #{addr}</if>
+		<if test='ph != null and ph !=""'>, ph = #{ph}</if>
+		<if test='profileImg != null'>, profileImg = #{profileImg}</if>		
+		WHERE i_user = #{i_user} 
+	
+	</update>
 </mapper>
 
 

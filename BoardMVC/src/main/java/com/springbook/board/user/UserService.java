@@ -49,13 +49,15 @@ public class UserService {
 	
 	   public int login(UserVO param, HttpSession hs) {
 		      int result = 0;
-		      UserVO db = mapper.login(param);
+		      UserVO db = mapper.selUser(param);
 		      
 		      if (db != null) {  //로그인성공
 		         String pw = param.getUpw();  //내가 입력한값
 		         String salt = db.getSalt();
 		         String hashPw = MyUtils.hashPassword(pw, salt);
 		         if (db.getUpw().equals(hashPw)) {  //로그인성공
+		        	db.setUpw(null);
+		        	db.setUid(null);
 		            hs.setAttribute("loginUser", db);
 		            result = 1;
 		         } else {
@@ -157,7 +159,7 @@ public class UserService {
 			UserVO param = new UserVO();
 			param.setUid(String.valueOf(kui.getId()));
 			
-			UserVO dbResult = mapper.login(param);
+			UserVO dbResult = mapper.selUser(param);
 			
 			if(dbResult == null) { //회원가입
 				param.setNm(kui.getProperties().getNickname());
@@ -177,19 +179,77 @@ public class UserService {
 		   return result;
 	   }
 	   
+	   
+	   public void delProfileImgParent(HttpSession hs) {  //DB profileImg에 빈칸 넣기
+		   delProfileImg(hs);
+		   
+		   UserVO loginUser = (UserVO)hs.getAttribute("loginUser");
+		   
+		   UserVO param = new UserVO();
+		   param.setI_user(loginUser.getI_user());
+		   param.setProfileImg("");
+		   
+		   mapper.updUser(param);
+	   }
+	   
+	   
+	   public void delProfileImg(HttpSession hs) {
+		   UserVO loginUser = (UserVO)hs.getAttribute("loginUser");
+		   
+		   UserVO dbUser = mapper.selUser(loginUser);
+		   
+		   String realPath = hs.getServletContext().getRealPath("/"); //루트 절대경로 가져오기
+		   String imgFolder = realPath + "/resources/img/user/" + loginUser.getI_user();
+		   
+		   if("".equals(dbUser.getProfileImg())) {  //기존 이미지가 있으면 삭제처리
+			   String imgPath = imgFolder + "/" + dbUser.getProfileImg();
+			   MyUtils.deleteFile(imgPath);
+		   }
+	   }
+	   
+	   
 	   //파일업로드
 	   public void uploadPfoFile(MultipartFile file, HttpSession hs) {
 		   UserVO loginUser = (UserVO)hs.getAttribute("loginUser");
 		   
 		   String realPath = hs.getServletContext().getRealPath("/"); //루트 절대경로 가져오기
 		   // realPath => C:\javaBackend2020\workspace_jsp\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\BoardMVC 여기경로까지 가져온다.
-		   MyUtils.saveFile(realPath + "/resources/img/user/" + loginUser.getI_user(), file);
+		   String imgFolder = realPath + "/resources/img/user/" + loginUser.getI_user();
+		   
+		   delProfileImg(hs); //기존 이미지 삭제
+		   
+		   String fileNm = MyUtils.saveFile(imgFolder, file); //리턴되는 값은 파일명
+		   
+		   UserVO param = new UserVO();
+		   param.setI_user(loginUser.getI_user());
+		   param.setProfileImg(fileNm);
+		   
+		   mapper.updUser(param); //프로필, 이름, 폰번호, 비밀번호등이 바꼈을때 m_dt 업데이트
+	   }
+	   
+	   
+	   public String getProfileImg(HttpSession hs) {  //db에서 프로필 사진 가져오기
+		   String profileImg = null;
+		   
+		   UserVO loginUser = (UserVO)hs.getAttribute("loginUser");
+		   UserVO dbResult = mapper.selUser(loginUser);
+		   
+		   profileImg = dbResult.getProfileImg();
+		   
+		   if(profileImg == null || profileImg.equals("")) {
+			   profileImg = "/resources/img/base_profile.png";
+		   } else {
+			   profileImg = "/resources/img/user/" + loginUser.getI_user() + "/" + profileImg;
+		   }
+		   
+		   return profileImg;
+		   
 	   }
 }
 
 
 
-
+ 
 
 
 

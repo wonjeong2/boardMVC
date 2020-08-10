@@ -90,6 +90,7 @@ public class UserController {
 		return "redirect:/user/login";
 	}
 	
+	
 	@ResponseBody //@ResponseBody 이걸쓰면 jackson이 반응한다.
 	@RequestMapping(value="/phAuth", method=RequestMethod.GET)
 	public Map<String, Object> phAuth(@RequestParam String ph, HttpSession hs) {  
@@ -109,6 +110,7 @@ public class UserController {
 		return map;
 	}
 	
+	
 	@RequestMapping(value="/loginKAKAO", method=RequestMethod.GET)
 	public String loginKAKAO() {
 		//인증코드 받기
@@ -117,6 +119,7 @@ public class UserController {
 		
 		return uri;
 	}
+	
 	
 	@RequestMapping(value="/joinKakao", method=RequestMethod.GET)
 	public String joinKAKAO(@RequestParam(required=false) String code,  
@@ -137,11 +140,15 @@ public class UserController {
 		return "redirect:/board/list";		
 	}
 	
+	
 	@RequestMapping(value="/profile", method=RequestMethod.GET)
-	public String profile(Model model) {
-
+	public String profile(Model model, HttpSession hs) {
+		
+		model.addAttribute("myProfile", service.getProfileImg(hs));
+		
 		return "user/profile";
 	}
+	
 	
 	@RequestMapping(value="/profile", method=RequestMethod.POST)
 	public String profile(@RequestParam("uploadProfile") MultipartFile file
@@ -149,13 +156,23 @@ public class UserController {
 		
 		service.uploadPfoFile(file, hs);
 		
-		return "user/profile";
+		return "redirect:/user/profile";
+	}
+	
+	@RequestMapping(value="/delProfile", method=RequestMethod.GET)
+	public String profile(HttpSession hs) {		
+		
+		service.delProfileImgParent(hs);
+		
+		return "redirect:/user/profile";
 	}
 	
 	
 	@RequestMapping(value="/logout", method=RequestMethod.GET)
 	public String logout(HttpSession hs) {
 		hs.invalidate();
+		
+		
 		
 		return "redirect:/user/login";
 	}

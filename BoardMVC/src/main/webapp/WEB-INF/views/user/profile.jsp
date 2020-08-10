@@ -8,9 +8,10 @@
 </head>
 <body>
 	<div>
-		<img src="${myProfile != null?myProfile : '/resources/img/base_profile.png'}">
+		<img src="${myProfile}">
 	</div>
 	<div>
+		<a href="/user/delProfile">기본 이미지 설정</a>
 		<form method="post" action="/user/profile" enctype="multipart/form-data">
   			<div>
   				<label>
