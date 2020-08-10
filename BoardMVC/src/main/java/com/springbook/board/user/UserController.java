@@ -144,9 +144,11 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="/profile", method=RequestMethod.POST)
-	public String profile(@RequestParam("uploadProfile") MultipartFile uploadProfile) {
-		System.out.println("uploadProfile :" + uploadProfile);
-
+	public String profile(@RequestParam("uploadProfile") MultipartFile file
+			, HttpSession hs) {		
+		
+		service.uploadPfoFile(file, hs);
+		
 		return "user/profile";
 	}
 	

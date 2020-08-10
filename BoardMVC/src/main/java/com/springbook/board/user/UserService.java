@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -174,6 +175,15 @@ public class UserService {
 			hs.setAttribute("loginUser", dbResult);
 			
 		   return result;
+	   }
+	   
+	   //파일업로드
+	   public void uploadPfoFile(MultipartFile file, HttpSession hs) {
+		   UserVO loginUser = (UserVO)hs.getAttribute("loginUser");
+		   
+		   String realPath = hs.getServletContext().getRealPath("/"); //루트 절대경로 가져오기
+		   // realPath => C:\javaBackend2020\workspace_jsp\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\BoardMVC 여기경로까지 가져온다.
+		   MyUtils.saveFile(realPath + "/resources/img/user/" + loginUser.getI_user(), file);
 	   }
 }
 
